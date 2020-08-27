@@ -60,12 +60,22 @@ export default {
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt/content
     '@nuxt/content',
+    '@nuxtjs/apollo',
   ],
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'https://rickandmortyapi.com/graphql/',
+      },
+    },
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://rickandmortyapi.com/api/',
+  },
   /*
    ** Content module configuration
    ** See https://content.nuxtjs.org/configuration
