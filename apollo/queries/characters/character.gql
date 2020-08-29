@@ -1,0 +1,27 @@
+query character($characterId: ID!) {
+ character(id: $characterId) {
+    id,
+    name
+    status,
+    species,
+    type,
+    gender,
+    image,
+    created,
+    origin {
+      name,
+    },
+    episode{
+      id
+      name,
+      air_date,
+      episode,
+    },
+    location {
+      id,
+      name,
+      type,
+      dimension
+    }
+  }
+}
