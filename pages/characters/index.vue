@@ -5,41 +5,22 @@
         Characters
       </h1>
       <div class="w-full inline-block">
-        <div class="w-2/12 float-left">
-          <div class="w-full">
-            <h2>Filters</h2>
-          </div>
-          <div class="w-full inline-block"></div>
-        </div>
         {{ characters.info }}
-        <div class="w-10/12 float-right flex items-start flex-wrap">
+        <div class="w-full float-right flex items-start flex-wrap">
+          <loader />
           <div
             v-for="item in characters.results"
             :key="item.id"
-            class="w-6/12 md:w-4/12 lg:w-3/12 float-left p-2"
+            class="w-6/12 md:w-1/12 lg:w-3/12 float-left p-2"
           >
-            <character-box :data="item" />
+            <character-list :data="item" />
           </div>
           <div class="w-full float-left text-center my-5">
-            <button
-              :disabled="hasPrevPage"
-              :class="hasPrevPage ? 'opacity-50 cursor-not-allowed' : ''"
-              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
-              @click="changePage(currentPage - 1)"
-            >
-              Prev
-            </button>
-            <span class="inline-block mx-2 text-black dark:text-white">
-              {{ currentPage + ' / ' + totalPage }}</span
-            >
-            <button
-              :disabled="hasNextPage"
-              :class="hasNextPage ? 'opacity-50 cursor-not-allowed' : ''"
-              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
-              @click="changePage(currentPage + 1)"
-            >
-              Next
-            </button>
+            <pagination
+              :total-page="totalPage"
+              :current-page="currentPage"
+              @change="changePage"
+            />
           </div>
         </div>
       </div>
@@ -48,14 +29,19 @@
 </template>
 
 <script>
-import characterBox from '~/components/list/character'
+import characterList from '~/components/list/character'
+import pagination from '~/components/list/pagination'
 export default {
   components: {
-    characterBox,
+    characterList,
+    pagination,
   },
   async asyncData({ route, params, error, store }) {
     try {
-      await store.dispatch('characters/fetchCharacters')
+      await Promise.all([
+        store.commit('characters/setPage', 1),
+        store.dispatch('characters/fetchCharacters'),
+      ])
     } catch (e) {
       error({
         statusCode: 404,
@@ -67,25 +53,24 @@ export default {
     characters() {
       return this.$store.getters['characters/characters']
     },
-    currentPage() {
-      return this.$store.getters['characters/page']
-    },
     totalPage() {
       return this.$store.getters['characters/charactersTotalPage']
     },
-    hasPrevPage() {
-      return this.currentPage <= 1
-    },
-    hasNextPage() {
-      return this.currentPage >= this.totalPage
+    currentPage() {
+      return this.$store.getters['characters/page']
     },
   },
   methods: {
     async changePage(page) {
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start()
+        window.scrollTo(0, 0)
+      })
       await Promise.all([
         this.$store.commit('characters/setPage', page),
         this.$store.dispatch('characters/fetchCharacters'),
       ])
+      this.$nuxt.$loading.finish()
     },
   },
 }

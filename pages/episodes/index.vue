@@ -5,14 +5,9 @@
         Episodes
       </h1>
       <div class="w-full inline-block">
-        <div class="w-2/12 float-left">
-          <div class="w-full">
-            <h2>Filters</h2>
-          </div>
-          <div class="w-full inline-block"></div>
-        </div>
         {{ episodes.info }}
-        <div class="w-10/12 float-right flex items-start flex-wrap">
+        <div class="w-full float-right flex items-start flex-wrap">
+          <loader />
           <div
             v-for="item in episodes.results"
             :key="item.id"
@@ -21,25 +16,11 @@
             <episode-list :data="item" />
           </div>
           <div class="w-full float-left text-center my-5">
-            <button
-              :disabled="hasPrevPage"
-              :class="hasPrevPage ? 'opacity-50 cursor-not-allowed' : ''"
-              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
-              @click="changePage(currentPage - 1)"
-            >
-              Prev
-            </button>
-            <span class="inline-block mx-2 text-black dark:text-white">
-              {{ currentPage + ' / ' + totalPage }}</span
-            >
-            <button
-              :disabled="hasNextPage"
-              :class="hasNextPage ? 'opacity-50 cursor-not-allowed' : ''"
-              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
-              @click="changePage(currentPage + 1)"
-            >
-              Next
-            </button>
+            <pagination
+              :total-page="totalPage"
+              :current-page="currentPage"
+              @change="changePage"
+            />
           </div>
         </div>
       </div>
@@ -49,13 +30,18 @@
 
 <script>
 import episodeList from '~/components/list/episode'
+import pagination from '~/components/list/pagination'
 export default {
   components: {
     episodeList,
+    pagination,
   },
   async asyncData({ route, params, error, store }) {
     try {
-      await store.dispatch('episodes/fetchEpisodes')
+      await Promise.all([
+        store.commit('episodes/setPage', 1),
+        store.dispatch('episodes/fetchEpisodes'),
+      ])
     } catch (e) {
       error({
         statusCode: 404,
@@ -67,25 +53,24 @@ export default {
     episodes() {
       return this.$store.getters['episodes/episodes']
     },
-    currentPage() {
-      return this.$store.getters['episodes/page']
-    },
     totalPage() {
       return this.$store.getters['episodes/episodesTotalPage']
     },
-    hasPrevPage() {
-      return this.currentPage <= 1
-    },
-    hasNextPage() {
-      return this.currentPage >= this.totalPage
+    currentPage() {
+      return this.$store.getters['episodes/page']
     },
   },
   methods: {
     async changePage(page) {
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start()
+        window.scrollTo(0, 0)
+      })
       await Promise.all([
         this.$store.commit('episodes/setPage', page),
         this.$store.dispatch('episodes/fetchEpisodes'),
       ])
+      this.$nuxt.$loading.finish()
     },
   },
 }
