@@ -33,6 +33,7 @@ export default {
       },
     ],
   },
+
   loading: '~/components/loader.vue',
   /*
    ** Global CSS
@@ -78,6 +79,9 @@ export default {
         httpEndpoint: 'https://rickandmortyapi.com/graphql/',
       },
     },
+  },
+  purgeCSS: {
+    whitelist: ['dark-mode'],
   },
   /*
    ** Axios module configuration
