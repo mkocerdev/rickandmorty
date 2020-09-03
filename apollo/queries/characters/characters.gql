@@ -1,6 +1,5 @@
-# Write your query or mutation here
-query {
-  characters {
+query ($page: Int!) {
+  characters  (page: $page){
     info {
       count,
       pages

@@ -1,40 +1,46 @@
 <template>
-  <div class="container">
-    <div class="w-full">
-      <div
-        v-for="item in characters.results"
-        :key="item.id"
-        class="w-6/12 float-left p-3"
-      >
-        <div
-          class="w-full float-left rounded-lg overflow-hidden relative border bg-white flex items-center"
-        >
-          <nuxt-link :to="'/characters/' + item.id" class="w-full">
-            <div class="w-4/12 float-left">
-              <img :src="item.image" />
-            </div>
-            <div class="w-8/12 float-left text-left p-5">
-              <p class="text-sm">
-                <span
-                  class="w-3 h-3 inline-block rounded-full mr-1"
-                  :class="
-                    item.status === 'Alive'
-                      ? 'bg-green-500'
-                      : item.status === 'Dead'
-                      ? 'bg-red-500'
-                      : 'bg-gray-500'
-                  "
-                ></span>
-                {{ item.status }}
-              </p>
-              <h2 class="font-bold text-xl">{{ item.name }}</h2>
-              <p class="text-sm">{{ item.species }} - {{ item.gender }}</p>
-              <div class="w-full mt-5">
-                <p class="text-sm text-gray-600">Origin location</p>
-                <p class="">{{ item.origin.name }}</p>
-              </div>
-            </div>
-          </nuxt-link>
+  <div class="w-full">
+    <div class="container mx-auto px-2">
+      <h1 class="text-3xl my-3 font-bold text-dark dark:text-white relative">
+        Characters
+      </h1>
+      <div class="w-full inline-block">
+        <div class="w-2/12 float-left">
+          <div class="w-full">
+            <h2>Filters</h2>
+          </div>
+          <div class="w-full inline-block"></div>
+        </div>
+        {{ characters.info }}
+        <div class="w-10/12 float-right flex items-start flex-wrap">
+          <div
+            v-for="item in characters.results"
+            :key="item.id"
+            class="w-6/12 md:w-4/12 lg:w-3/12 float-left p-2"
+          >
+            <character-box :data="item" />
+          </div>
+          <div class="w-full float-left text-center my-5">
+            <button
+              :disabled="hasPrevPage"
+              :class="hasPrevPage ? 'opacity-50 cursor-not-allowed' : ''"
+              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
+              @click="changePage(currentPage - 1)"
+            >
+              Prev
+            </button>
+            <span class="inline-block mx-2 text-black dark:text-white">
+              {{ currentPage + ' / ' + totalPage }}</span
+            >
+            <button
+              :disabled="hasNextPage"
+              :class="hasNextPage ? 'opacity-50 cursor-not-allowed' : ''"
+              class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
+              @click="changePage(currentPage + 1)"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -42,10 +48,14 @@
 </template>
 
 <script>
+import characterBox from '~/components/list/character'
 export default {
+  components: {
+    characterBox,
+  },
   async asyncData({ route, params, error, store }) {
     try {
-      await store.dispatch('characters/fetchCharacterList')
+      await store.dispatch('characters/fetchCharacters')
     } catch (e) {
       error({
         statusCode: 404,
@@ -55,46 +65,34 @@ export default {
   },
   computed: {
     characters() {
-      return this.$store.getters['characters/characterList']
+      return this.$store.getters['characters/characters']
+    },
+    currentPage() {
+      return this.$store.getters['characters/page']
+    },
+    totalPage() {
+      return this.$store.getters['characters/charactersTotalPage']
+    },
+    hasPrevPage() {
+      return this.currentPage <= 1
+    },
+    hasNextPage() {
+      return this.currentPage >= this.totalPage
+    },
+  },
+  methods: {
+    async changePage(page) {
+      await Promise.all([
+        this.$store.commit('characters/setPage', page),
+        this.$store.dispatch('characters/fetchCharacters'),
+      ])
     },
   },
 }
 </script>
 
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+<style scoped>
+.cover {
+  height: 25rem;
 }
 </style>
