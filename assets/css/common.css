@@ -1,3 +1,11 @@
+
 html, body{
-    font-family: 'Lato', sans-serif;
+  font-family: 'Sarabun', sans-serif;
+}
+.dark-mode {
+  background-color: #2d3748;
+}
+
+.light-mode {
+  background-color: #edf2f7;
 }

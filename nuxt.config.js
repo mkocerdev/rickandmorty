@@ -29,10 +29,11 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap',
+          'https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap',
       },
     ],
   },
+  loading: '~/components/loader.vue',
   /*
    ** Global CSS
    */
@@ -57,6 +58,8 @@ export default {
     '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+
+    '@nuxtjs/color-mode',
   ],
   /*
    ** Nuxt.js modules
