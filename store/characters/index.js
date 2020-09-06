@@ -3,7 +3,6 @@ import CHARACTER_LIST_QUERY from '~/apollo/queries/characters/characters.gql'
 import CHARACTER_RANDOM_LIST_QUERY from '~/apollo/queries/characters/charactersByIds.gql'
 
 export const state = () => ({
-  page: 1,
   character: null,
   characters: [],
   characterRandomList: [],
@@ -21,10 +20,7 @@ export const getters = {
     return state.characters.data.characters.info.pages
   },
   character(state) {
-    return state.character.data
-  },
-  page(state) {
-    return state.page
+    return state.character.data.character
   },
 }
 
@@ -38,12 +34,12 @@ export const actions = {
     })
     commit('setCharacter', response)
   },
-  async fetchCharacters({ commit, state }) {
+  async fetchCharacters({ commit }, page) {
     const client = this.app.apolloProvider.defaultClient
     const response = await client.query({
       prefetch: true,
       query: CHARACTER_LIST_QUERY,
-      variables: { page: state.page },
+      variables: { page },
     })
     commit('setCharacters', response)
   },
@@ -82,8 +78,5 @@ export const mutations = {
   },
   setRandomNumbers(state, number) {
     state.randomNumbers.push(number)
-  },
-  setPage(state, page) {
-    state.page = page
   },
 }

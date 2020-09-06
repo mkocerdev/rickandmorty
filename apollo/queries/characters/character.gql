@@ -16,6 +16,19 @@ query character($characterId: ID!) {
       name,
       air_date,
       episode,
+       characters {
+        id,
+        name
+        status,
+        species,
+        type,
+        gender,
+        image,
+        created,
+        origin {
+        name,
+        },
+      }
     },
     location {
       id,

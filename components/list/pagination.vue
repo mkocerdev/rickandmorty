@@ -3,7 +3,7 @@
     <button
       :disabled="hasPrevPage"
       :class="hasPrevPage ? 'opacity-50 cursor-not-allowed' : ''"
-      class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
+      class="border bg-white dark:bg-dark dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
       @click="change(currentPage - 1)"
     >
       Prev
@@ -14,7 +14,7 @@
     <button
       :disabled="hasNextPage"
       :class="hasNextPage ? 'opacity-50 cursor-not-allowed' : ''"
-      class="border bg-white dark:bg-gray-900 dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
+      class="border bg-white dark:bg-dark dark:border-gray-900 px-6 py-2 text-black dark:text-white rounded"
       @click="change(currentPage + 1)"
     >
       Next
@@ -30,13 +30,18 @@ export default {
       type: Number,
       default: null,
     },
-    currentPage: {
-      required: true,
-      type: Number,
-      default: 1,
-    },
   },
   computed: {
+    currentPage() {
+      let currentPage = null
+      const queryPage = parseInt(this.$route.query.page)
+      if (queryPage && queryPage <= this.totalPage && queryPage > 0) {
+        currentPage = queryPage
+      } else {
+        currentPage = 1
+      }
+      return currentPage
+    },
     hasPrevPage() {
       return this.currentPage <= 1
     },
@@ -46,7 +51,7 @@ export default {
   },
   methods: {
     async change(page) {
-      await this.$emit('change', page)
+      await Promise.all([this.$router.push({ query: { page } })])
     },
   },
 }
