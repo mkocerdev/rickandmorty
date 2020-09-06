@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full float-left rounded-lg overflow-hidden relative border bg-white dark:bg-gray-900 dark:border-gray-900 flex items-center"
+    class="w-full float-left rounded-lg overflow-hidden relative border bg-white dark:bg-dark dark:border-gray-900 flex items-center"
   >
     <nuxt-link :to="'/characters/' + data.id" class="w-full">
       <div class="w-full float-left">

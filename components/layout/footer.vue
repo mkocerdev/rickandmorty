@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white dark:bg-gray-900 mt-8">
+  <div class="bg-white dark:bg-black mt-8">
     <div class="container mx-auto flex items-center py-12">
       <p class="w-full block text-right text-gray-500 dark:text-gray-600">
         Made by

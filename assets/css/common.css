@@ -3,9 +3,15 @@ html, body{
   font-family: 'Sarabun', sans-serif;
 }
 .dark-mode {
-  background-color: #2d3748;
+  background-color: #202835;
 }
-
 .light-mode {
   background-color: #edf2f7;
+}
+
+.dark-mode .loader{
+  background-color:rgba(0,0,0,0.75)
+}
+.light-mode .loader{
+  background-color:rgba(255,255,255,0.75)
 }

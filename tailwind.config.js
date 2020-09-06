@@ -7,6 +7,11 @@
 module.exports = {
   theme: {
     darkSelector: '.dark-mode',
+    extend: {
+      backgroundColor: {
+        dark: '#14181f',
+      },
+    },
   },
   plugins: [require('tailwindcss-dark-mode')()],
   variants: {
