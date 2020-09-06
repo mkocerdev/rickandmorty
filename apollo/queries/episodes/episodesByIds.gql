@@ -6,8 +6,6 @@ query ($ids: [ID!]!) {
     episode,
     characters {
       id,
-      name,
-      image
     }
   }
 }

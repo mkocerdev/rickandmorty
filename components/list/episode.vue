@@ -1,12 +1,9 @@
 <template>
   <div
-    class="w-full float-left rounded-lg overflow-hidden relative border bg-white dark:bg-gray-900 dark:border-gray-900 flex items-center"
+    class="w-full float-left rounded-lg overflow-hidden relative border bg-white dark:bg-dark dark:border-gray-900 flex items-center"
   >
     <nuxt-link :to="'/episodes/' + data.id" class="w-full flex">
-      <div class="w-4/12 float-left flex items-center justify-center">
-        <p class="text-black dark:text-white">{{ data.episode }}</p>
-      </div>
-      <div class="w-8/12 float-left text-left p-5">
+      <div class="w-full float-left text-left p-5">
         <p class="text-sm text-black dark:text-white">
           {{ data.episode }}
         </p>
@@ -20,20 +17,7 @@
         <div class="w-full mt-5">
           <p class="text-sm text-gray-600">
             {{ data.characters.length }} characters appear in the episode.
-            episode.
           </p>
-          <div
-            class="whitespace-no-wrap overflow-x-auto w-full flex items-start py-2"
-          >
-            <div
-              v-for="(character, index) in data.characters"
-              :key="index"
-              style="flex: 0 0 auto"
-              class="w-8 h-8 flex items-center justify-center rounded-full text-black dark:text-white bg-gray-200 dark:bg-gray-800 float-left overflow-hidden m-1"
-            >
-              <img :src="character.image" class="w-full" alt="" />
-            </div>
-          </div>
         </div>
       </div>
     </nuxt-link>

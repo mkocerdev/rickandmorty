@@ -3,7 +3,6 @@ import EPISODES_LIST_QUERY from '~/apollo/queries/episodes/episodes.gql'
 import EPISODES_RANDOM_LIST_QUERY from '~/apollo/queries/episodes/episodesByIds.gql'
 
 export const state = () => ({
-  page: 1,
   episode: null,
   episodes: [],
   episodesRandom: [],
@@ -21,10 +20,7 @@ export const getters = {
     return state.episodes.data.episodes.info.pages
   },
   episode(state) {
-    return state.episode.data
-  },
-  page(state) {
-    return state.page
+    return state.episode.data.episode
   },
 }
 
@@ -38,12 +34,12 @@ export const actions = {
     })
     commit('setEpisode', response)
   },
-  async fetchEpisodes({ commit, state }) {
+  async fetchEpisodes({ commit }, page) {
     const client = this.app.apolloProvider.defaultClient
     const response = await client.query({
       prefetch: true,
       query: EPISODES_LIST_QUERY,
-      variables: { page: state.page },
+      variables: { page },
     })
     commit('setEpisodes', response)
   },
@@ -82,8 +78,5 @@ export const mutations = {
   },
   setRandomNumbers(state, number) {
     state.randomNumbers.push(number)
-  },
-  setPage(state, page) {
-    state.page = page
   },
 }

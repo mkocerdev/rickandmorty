@@ -1,26 +1,20 @@
 <template>
-  <div class="w-full">
+  <div class="w-full mt-5">
     <div class="container mx-auto px-2">
       <h1 class="text-3xl my-3 font-bold text-dark dark:text-white relative">
         Episodes
       </h1>
       <div class="w-full inline-block">
-        {{ episodes.info }}
-        <div class="w-full float-right flex items-start flex-wrap">
-          <loader />
+        <div class="-mx-2 flex items-start flex-wrap">
           <div
             v-for="item in episodes.results"
             :key="item.id"
-            class="w-6/12 md:w-6/12 lg:w-6/12 float-left p-2"
+            class="w-6/12 md:w-4/12 lg:w-4/12 float-left p-2"
           >
             <episode-list :data="item" />
           </div>
           <div class="w-full float-left text-center my-5">
-            <pagination
-              :total-page="totalPage"
-              :current-page="currentPage"
-              @change="changePage"
-            />
+            <pagination :total-page="totalPage" />
           </div>
         </div>
       </div>
@@ -36,16 +30,15 @@ export default {
     episodeList,
     pagination,
   },
-  async asyncData({ route, params, error, store }) {
+  watchQuery: ['page'],
+  async asyncData({ route, params, error, store, query }) {
+    const page = +query.page || 1
     try {
-      await Promise.all([
-        store.commit('episodes/setPage', 1),
-        store.dispatch('episodes/fetchEpisodes'),
-      ])
+      await store.dispatch('episodes/fetchEpisodes', page)
     } catch (e) {
       error({
         statusCode: 404,
-        message: e,
+        message: 'This page not found. Detail:' + e,
       })
     }
   },
@@ -56,28 +49,6 @@ export default {
     totalPage() {
       return this.$store.getters['episodes/episodesTotalPage']
     },
-    currentPage() {
-      return this.$store.getters['episodes/page']
-    },
-  },
-  methods: {
-    async changePage(page) {
-      this.$nextTick(() => {
-        this.$nuxt.$loading.start()
-        window.scrollTo(0, 0)
-      })
-      await Promise.all([
-        this.$store.commit('episodes/setPage', page),
-        this.$store.dispatch('episodes/fetchEpisodes'),
-      ])
-      this.$nuxt.$loading.finish()
-    },
   },
 }
 </script>
-
-<style scoped>
-.cover {
-  height: 25rem;
-}
-</style>
