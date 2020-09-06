@@ -9,7 +9,7 @@ module.exports = {
     darkSelector: '.dark-mode',
     extend: {
       backgroundColor: {
-        dark: '#14181f',
+        dark: '#11161d',
       },
     },
   },
