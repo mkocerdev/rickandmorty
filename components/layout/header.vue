@@ -46,11 +46,13 @@
 </template>
 
 <script>
+import Logo from '~/components/Logo'
 import githubIcon from '~/components/icon/github'
 import lightIcon from '~/components/icon/light'
 import darkIcon from '~/components/icon/dark'
 export default {
   components: {
+    Logo,
     githubIcon,
     lightIcon,
     darkIcon,
