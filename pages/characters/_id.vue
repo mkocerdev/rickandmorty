@@ -120,5 +120,10 @@ export default {
       return this.$store.getters['characters/character']
     },
   },
+  head() {
+    return {
+      title: this.character.name,
+    }
+  },
 }
 </script>

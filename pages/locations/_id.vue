@@ -94,5 +94,10 @@ export default {
       return this.$store.getters['locations/location']
     },
   },
+  head() {
+    return {
+      title: this.location.name,
+    }
+  },
 }
 </script>

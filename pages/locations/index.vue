@@ -42,6 +42,11 @@ export default {
       })
     }
   },
+  data() {
+    return {
+      title: 'Locations',
+    }
+  },
   computed: {
     locations() {
       return this.$store.getters['locations/locations']
@@ -49,6 +54,11 @@ export default {
     totalPage() {
       return this.$store.getters['locations/locationsTotalPage']
     },
+  },
+  head() {
+    return {
+      title: this.title,
+    }
   },
 }
 </script>

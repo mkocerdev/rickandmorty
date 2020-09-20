@@ -89,5 +89,10 @@ export default {
       return this.$store.getters['episodes/episode']
     },
   },
+  head() {
+    return {
+      title: this.episode.name,
+    }
+  },
 }
 </script>

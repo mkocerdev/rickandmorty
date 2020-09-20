@@ -42,6 +42,11 @@ export default {
       })
     }
   },
+  data() {
+    return {
+      title: 'Episodes',
+    }
+  },
   computed: {
     episodes() {
       return this.$store.getters['episodes/episodes']
@@ -49,6 +54,11 @@ export default {
     totalPage() {
       return this.$store.getters['episodes/episodesTotalPage']
     },
+  },
+  head() {
+    return {
+      title: this.title,
+    }
   },
 }
 </script>

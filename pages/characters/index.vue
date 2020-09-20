@@ -30,7 +30,6 @@ export default {
     characterList,
     pagination,
   },
-  watchQuery: ['page'],
   async asyncData({ route, params, error, store, query }) {
     const page = +query.page || 1
     try {
@@ -42,6 +41,12 @@ export default {
       })
     }
   },
+  data() {
+    return {
+      title: 'Characters',
+    }
+  },
+  watchQuery: ['page'],
   computed: {
     characters() {
       return this.$store.getters['characters/characters']
@@ -49,6 +54,11 @@ export default {
     totalPage() {
       return this.$store.getters['characters/charactersTotalPage']
     },
+  },
+  head() {
+    return {
+      title: this.title,
+    }
   },
 }
 </script>
