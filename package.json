@@ -24,9 +24,9 @@
     "@nuxt/content": "^1.5.0",
     "@nuxtjs/apollo": "^4.0.1-rc.3",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
-    "apollo-link-ws": "^1.0.20",
     "graphql-tag": "^2.11.0",
-    "nuxt": "^2.14.0"
+    "nuxt": "^2.14.0",
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "devDependencies": {
     "@nuxtjs/color-mode": "^1.0.3",
