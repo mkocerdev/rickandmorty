@@ -14,14 +14,16 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    title: process.env.SITE_TITLE || '',
+    title: process.env.SITE_TITLE || 'Rick and Morty',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.SITE_META || '',
+        content:
+          process.env.SITE_META ||
+          'Client app for Rick and Morty API with Nuxt.js & Apollo GraphQL',
       },
     ],
     link: [
