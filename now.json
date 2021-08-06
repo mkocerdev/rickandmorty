@@ -5,7 +5,7 @@
         "ON_VERCEL": "true"
     },
     "builds": [
-        {
+        { 
             "src": "api/**/*.js",
             "use": "@now/node"
         },
